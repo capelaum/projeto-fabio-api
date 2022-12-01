@@ -2,10 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Discipline;
+use App\Models\Question;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Question>
+ * @extends Factory<Question>
  */
 class QuestionFactory extends Factory
 {
@@ -14,10 +17,19 @@ class QuestionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
+        $disciplines = collect(Discipline::all()->modelKeys());
+        $categories = collect(Category::all()->modelKeys());
+
         return [
-            //
+            'discipline_id' => $disciplines->random(),
+            'category_id' => $categories->random(),
+            'title' => fake()->sentence(),
+            'content' => fake()->paragraph(),
+            'year' => fake()->numberBetween(2018, 2022),
+            'image_url' => null,
+            'is_active' => fake()->boolean(),
         ];
     }
 }
