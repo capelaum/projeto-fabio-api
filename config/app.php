@@ -58,7 +58,7 @@ return [
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
 
-    'cloudinary_folder' => env('CLOUDINARY_FOLDER', 'projeto-fabio'),
+    'cloudinary_folder' => env('CLOUDINARY_FOLDER', 'professor-fabio-leonardo'),
 
     'asset_url' => env('ASSET_URL'),
 
