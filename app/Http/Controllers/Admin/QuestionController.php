@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\QuestionCollection;
+use App\Http\Resources\Admin\QuestionResource;
 use App\Models\Question;
 use Illuminate\Http\Request;
 
@@ -39,5 +40,14 @@ class QuestionController extends Controller
         $questions = $questions->paginate(12);
 
         return new QuestionCollection($questions);
+    }
+
+    /**
+     * @param Question $question
+     * @return QuestionResource
+     */
+    public function show(Question $question): QuestionResource
+    {
+        return new QuestionResource($question);
     }
 }
