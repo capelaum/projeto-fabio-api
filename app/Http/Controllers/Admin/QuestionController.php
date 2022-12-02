@@ -64,33 +64,8 @@ class QuestionController extends Controller
 
         $question->subjects()->sync($request->subjects);
 
-        $alternatives = [];
-
-        foreach ($request->alternatives as $alternative) {
-            $alternatives[] = [
-                'letter' => $alternative['letter'],
-                'content' => $alternative['content'],
-                'is_correct' => $alternative['is_correct'],
-                'question_id' => $question->id
-            ];
-        }
-
-        $question->alternatives()->createMany($alternatives);
-
-        if (!empty($request->links)) {
-            $links = [];
-
-            foreach ($request->links as $link) {
-                $links[] = [
-                    'title' => $link['title'],
-                    'url' => $link['url'],
-                    'type' => $link['type'],
-                    'question_id' => $question->id
-                ];
-            }
-
-            $question->links()->createMany($links);
-        }
+        $this->createAlternatives($request, $question);
+        $this->createLinks($request, $question);
 
         return response()->json([
             'message' => 'Questão cadastrada com sucesso!',
@@ -108,38 +83,11 @@ class QuestionController extends Controller
         $question->update($request->validated());
 
         $question->subjects()->sync($request->subjects);
-
-        $alternatives = [];
-
-        foreach ($request->alternatives as $alternative) {
-            $alternatives[] = [
-                'letter' => $alternative['letter'],
-                'content' => $alternative['content'],
-                'is_correct' => $alternative['is_correct'],
-                'question_id' => $question->id
-            ];
-        }
-
         $question->alternatives()->delete();
+        $question->links()->delete();
 
-        $question->alternatives()->createMany($alternatives);
-
-        if (!empty($request->links)) {
-            $links = [];
-
-            foreach ($request->links as $link) {
-                $links[] = [
-                    'title' => $link['title'],
-                    'url' => $link['url'],
-                    'type' => $link['type'],
-                    'question_id' => $question->id
-                ];
-            }
-
-            $question->links()->delete();
-
-            $question->links()->createMany($links);
-        }
+        $this->createAlternatives($request, $question);
+        $this->createLinks($request, $question);
 
         return response()->json([
             'message' => 'Questão atualizada com sucesso!',
@@ -158,5 +106,53 @@ class QuestionController extends Controller
         return response()->json([
             'message' => 'Questão excluída com sucesso!'
         ], 200);
+    }
+
+    /**
+     * @param UpdateQuestionRequest|StoreQuestionRequest $request
+     * @param Question $question
+     * @return void
+     */
+    public function createAlternatives(
+        UpdateQuestionRequest|StoreQuestionRequest $request,
+        Question $question
+    ): void {
+        $alternatives = [];
+
+        foreach ($request->alternatives as $alternative) {
+            $alternatives[] = [
+                'letter' => $alternative['letter'],
+                'content' => $alternative['content'],
+                'is_correct' => $alternative['is_correct'],
+                'question_id' => $question->id
+            ];
+        }
+
+        $question->alternatives()->createMany($alternatives);
+    }
+
+    /**
+     * @param UpdateQuestionRequest|StoreQuestionRequest $request
+     * @param Question $question
+     * @return void
+     */
+    public function createLinks(
+        UpdateQuestionRequest|StoreQuestionRequest $request,
+        Question $question
+    ): void {
+        if (!empty($request->links)) {
+            $links = [];
+
+            foreach ($request->links as $link) {
+                $links[] = [
+                    'title' => $link['title'],
+                    'url' => $link['url'],
+                    'type' => $link['type'],
+                    'question_id' => $question->id
+                ];
+            }
+
+            $question->links()->createMany($links);
+        }
     }
 }

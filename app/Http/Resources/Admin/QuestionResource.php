@@ -42,8 +42,8 @@ class QuestionResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'year' => $this->year,
-            'image_url' => $this->image_url,
-            'is_active' => $this->is_active,
+            'imageUrl' => $this->image_url,
+            'isActive' => $this->is_active,
             'createdAt' => date('d/m/Y', strtotime($this->created_at)),
             'updatedAt' => date('d/m/Y', strtotime($this->updated_at))
         ];
