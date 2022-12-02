@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuestionRequest;
+use App\Http\Requests\Admin\UpdateQuestionRequest;
 use App\Http\Resources\Admin\QuestionCollection;
 use App\Http\Resources\Admin\QuestionResource;
 use App\Models\Question;
@@ -95,5 +96,54 @@ class QuestionController extends Controller
             'message' => 'Questão cadastrada com sucesso!',
             'question' => new QuestionResource($question)
         ], 201);
+    }
+
+    /**
+     * @param UpdateQuestionRequest $request
+     * @param Question $question
+     * @return JsonResponse
+     */
+    public function update(UpdateQuestionRequest $request, Question $question): JsonResponse
+    {
+        $question->update($request->validated());
+
+        $question->subjects()->sync($request->subjects);
+
+        $alternatives = [];
+
+        foreach ($request->alternatives as $alternative) {
+            $alternatives[] = [
+                'letter' => $alternative['letter'],
+                'content' => $alternative['content'],
+                'is_correct' => $alternative['is_correct'],
+                'question_id' => $question->id
+            ];
+        }
+
+        $question->alternatives()->delete();
+
+        $question->alternatives()->createMany($alternatives);
+
+        if (!empty($request->links)) {
+            $links = [];
+
+            foreach ($request->links as $link) {
+                $links[] = [
+                    'title' => $link['title'],
+                    'url' => $link['url'],
+                    'type' => $link['type'],
+                    'question_id' => $question->id
+                ];
+            }
+
+            $question->links()->delete();
+
+            $question->links()->createMany($links);
+        }
+
+        return response()->json([
+            'message' => 'Questão atualizada com sucesso!',
+            'question' => new QuestionResource($question)
+        ], 200);
     }
 }
