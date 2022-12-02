@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use JsonSerializable;
 
-class CategoryCollection extends ResourceCollection
+class DisciplineCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
