@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('content');
             $table->char('letter', 1);
             $table->boolean('is_correct')->default(false);
-            $table->timestamps();
         });
     }
 

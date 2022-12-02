@@ -31,6 +31,14 @@ class QuestionResource extends JsonResource
                     'name' => $subject->name,
                 ];
             }),
+            'alternatives' => $this->alternatives->map(function ($alternative) {
+                return [
+                    'id' => $alternative->id,
+                    'content' => $alternative->content,
+                    'letter' => $alternative->letter,
+                    'is_correct' => $alternative->is_correct,
+                ];
+            }),
             'title' => $this->title,
             'content' => $this->content,
             'year' => $this->year,

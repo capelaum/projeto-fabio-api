@@ -206,6 +206,13 @@ return [
         'description' => 'descrição',
         'password_confirmation' => 'confirmação da senha',
         'current_password' => 'senha atual',
+        'alternatives.1.letter' => 'letra da alternativa',
+        'alternatives.*.is_correct' => 'alternativa correta ou não',
+        'alternatives.*.content' => 'conteúdo da alternativa',
+        'links.*.title' => 'título do link',
+        'links.*.url' => 'url do link',
+        'links.*.type' => 'tipo do link',
+        'subjects.*' => 'Assunto'
     ],
 
 ];

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreQuestionRequest;
 use App\Http\Resources\Admin\QuestionCollection;
 use App\Http\Resources\Admin\QuestionResource;
 use App\Models\Question;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -49,5 +51,49 @@ class QuestionController extends Controller
     public function show(Question $question): QuestionResource
     {
         return new QuestionResource($question);
+    }
+
+    /**
+     * @param StoreQuestionRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreQuestionRequest $request): JsonResponse
+    {
+        $question = Question::create($request->validated());
+
+        $question->subjects()->sync($request->subjects);
+
+        $alternatives = [];
+
+        foreach ($request->alternatives as $alternative) {
+            $alternatives[] = [
+                'letter' => $alternative['letter'],
+                'content' => $alternative['content'],
+                'is_correct' => $alternative['is_correct'],
+                'question_id' => $question->id
+            ];
+        }
+
+        $question->alternatives()->createMany($alternatives);
+
+        if (!empty($request->links)) {
+            $links = [];
+
+            foreach ($request->links as $link) {
+                $links[] = [
+                    'title' => $link['title'],
+                    'url' => $link['url'],
+                    'type' => $link['type'],
+                    'question_id' => $question->id
+                ];
+            }
+
+            $question->links()->createMany($links);
+        }
+
+        return response()->json([
+            'message' => 'Questão cadastrada com sucesso!',
+            'question' => new QuestionResource($question)
+        ], 201);
     }
 }

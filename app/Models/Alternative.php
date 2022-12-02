@@ -10,6 +10,8 @@ class Alternative extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'question_id',
         'content',

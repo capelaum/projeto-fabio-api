@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('title');
             $table->string('url', 1000);
             $table->string('type')->default('Geral');
-            $table->timestamps();
         });
     }
 
