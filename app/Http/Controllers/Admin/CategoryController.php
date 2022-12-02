@@ -78,4 +78,24 @@ class CategoryController extends Controller
             'category' => new CategoryResource($category)
         ], 200);
     }
+
+    /**
+     * @param Category $category
+     * @return JsonResponse
+     */
+    public function destroy(Category $category): JsonResponse
+    {
+        $cloudinaryFolder = config('app.cloudinary_folder');
+
+        $imageUrlArray = explode('/', $category->image_url);
+        $publicId = explode('.', end($imageUrlArray))[0];
+
+        cloudinary()->destroy("$cloudinaryFolder/categorias/$publicId");
+
+        Category::destroy($category->id);
+
+        return response()->json([
+            'message' => 'Categoria excluída com sucesso!'
+        ], 200);
+    }
 }
