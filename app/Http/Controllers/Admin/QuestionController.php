@@ -146,4 +146,17 @@ class QuestionController extends Controller
             'question' => new QuestionResource($question)
         ], 200);
     }
+
+    /**
+     * @param Question $question
+     * @return JsonResponse
+     */
+    public function destroy(Question $question): JsonResponse
+    {
+        $question->delete();
+
+        return response()->json([
+            'message' => 'Questão excluída com sucesso!'
+        ], 200);
+    }
 }
