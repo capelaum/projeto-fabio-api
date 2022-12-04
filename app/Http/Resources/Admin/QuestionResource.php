@@ -36,7 +36,15 @@ class QuestionResource extends JsonResource
                     'id' => $alternative->id,
                     'content' => $alternative->content,
                     'letter' => $alternative->letter,
-                    'is_correct' => $alternative->is_correct,
+                    'isCorrect' => $alternative->is_correct,
+                ];
+            }),
+            'links' => $this->links->map(function ($link) {
+                return [
+                    'id' => $link->id,
+                    'title' => $link->title,
+                    'url' => $link->url,
+                    'type' => $link->type,
                 ];
             }),
             'title' => $this->title,

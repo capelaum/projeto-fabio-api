@@ -155,4 +155,17 @@ class QuestionController extends Controller
             $question->links()->createMany($links);
         }
     }
+
+    public function years()
+    {
+        // get unique years, sort descending and turn into array of numbers
+        $years = Question::select('year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->get()
+            ->pluck('year')
+            ->map(fn($year) => (string)$year);
+
+        return response()->json($years);
+    }
 }
