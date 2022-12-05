@@ -34,10 +34,10 @@ class QuestionController extends Controller
                 fn($query, $discipline) => $query->where('discipline_id', $discipline))
             ->when(
                 $request->subject,
-                fn($query, $subject) => $query->whereHas(
-                    'subjects',
-                    fn($query) => $query->where('subject_id', $subject)
-                )
+                fn($query, $subject) => $subject === 'none'
+                    ? $query->doesntHave('subjects')
+                    : $query->whereHas('subjects', fn($query) => $query->where('id', $subject)
+                    )
             );
 
         $activeCount = (clone $questions)->where('is_active', true)->count();

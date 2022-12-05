@@ -16,7 +16,7 @@ class QuestionSeeder extends Seeder
      */
     public function run()
     {
-        Question::factory(60)
+        Question::factory(100)
             ->has(Alternative::factory([
                 'is_correct' => true,
                 'letter' => 'A',
