@@ -15,9 +15,9 @@ class QuestionController extends Controller
 {
     /**
      * @param Request $request
-     * @return QuestionCollection
+     * @return JsonResponse
      */
-    public function index(Request $request): QuestionCollection
+    public function index(Request $request): JsonResponse
     {
         $questions = Question::query();
 
@@ -40,9 +40,32 @@ class QuestionController extends Controller
                 )
             );
 
+        $activeCount = (clone $questions)->where('is_active', true)->count();
+        $inactiveCount = (clone $questions)->where('is_active', false)->count();
+
+        $questions->orderBy('updated_at', 'desc');
+
         $questions = $questions->paginate(12);
 
-        return new QuestionCollection($questions);
+        return response()->json([
+            'questions' => new QuestionCollection($questions),
+            'meta' => [
+                'activeCount' => $activeCount,
+                'inactiveCount' => $inactiveCount,
+                'total' => $questions->total(),
+                'currentPage' => $questions->currentPage(),
+                'lastPage' => $questions->lastPage(),
+                'perPage' => $questions->perPage(),
+                'from' => $questions->firstItem(),
+                'to' => $questions->lastItem(),
+            ],
+            'links' => [
+                'first' => $questions->url(1),
+                'last' => $questions->url($questions->lastPage()),
+                'prev' => $questions->previousPageUrl(),
+                'next' => $questions->nextPageUrl(),
+            ],
+        ]);
     }
 
     /**
