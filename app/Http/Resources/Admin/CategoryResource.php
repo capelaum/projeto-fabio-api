@@ -19,6 +19,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'imageUrl' => $this->image_url,
+            'questionsCount' => $this->questions->count(),
             'createdAt' => date('d/m/Y', strtotime($this->created_at)),
             'updatedAt' => date('d/m/Y', strtotime($this->updated_at))
         ];

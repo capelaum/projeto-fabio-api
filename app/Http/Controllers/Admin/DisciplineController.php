@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateDisciplineRequest;
 use App\Http\Resources\Admin\DisciplineCollection;
 use App\Http\Resources\Admin\DisciplineResource;
 use App\Models\Discipline;
+use App\Models\Question;
 use Illuminate\Http\JsonResponse;
 
 class DisciplineController extends Controller
@@ -64,7 +65,15 @@ class DisciplineController extends Controller
      */
     public function destroy(Discipline $discipline): JsonResponse
     {
+        if ($discipline->id === 1) {
+            return response()->json([
+                'message' => 'Não é possível excluir a disciplina padrão!'
+            ], 400);
+        }
+
         $discipline->delete();
+
+        Question::whereNull('discipline_id')->update(['discipline_id' => 1]);
 
         return response()->json([
             'message' => 'Disciplina excluída com sucesso!'

@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Http\Resources\Admin\CategoryCollection;
 use App\Http\Resources\Admin\CategoryResource;
 use App\Models\Category;
+use App\Models\Question;
 use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
@@ -85,6 +86,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category): JsonResponse
     {
+        if ($category->id === 1) {
+            return response()->json([
+                'message' => 'Não é possível excluir a categoria padrão!'
+            ], 400);
+        }
+
         $cloudinaryFolder = config('app.cloudinary_folder');
 
         $imageUrlArray = explode('/', $category->image_url);
@@ -93,6 +100,8 @@ class CategoryController extends Controller
         cloudinary()->destroy("$cloudinaryFolder/categorias/$publicId");
 
         Category::destroy($category->id);
+
+        Question::whereNull('category_id')->update(['category_id' => 1]);
 
         return response()->json([
             'message' => 'Categoria excluída com sucesso!'

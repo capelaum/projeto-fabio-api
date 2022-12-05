@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
-    const PLACEHOLDER = 'https://dummyimage.com/150x150/333/fff';
+    const PLACEHOLDER = 'https://dummyimage.com/80x80/fff/333';
 
     private $categories = [
         [
