@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateDisciplineRequest extends FormRequest
 {
@@ -24,7 +25,13 @@ class UpdateDisciplineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255'
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:255',
+                Rule::unique('disciplines')->ignore($this->discipline->id),
+            ],
         ];
     }
 }
