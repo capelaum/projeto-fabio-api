@@ -17,5 +17,4 @@ Route::group([
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('disciplines', DisciplineController::class);
     Route::apiResource('subjects', SubjectController::class);
-
 });

@@ -29,7 +29,6 @@ return new class extends Migration {
             $table->string('title');
             $table->text('content');
             $table->integer('year');
-            $table->string('image_url', 1000)->nullable();
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });

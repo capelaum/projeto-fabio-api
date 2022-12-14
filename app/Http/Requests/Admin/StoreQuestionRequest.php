@@ -31,7 +31,6 @@ class StoreQuestionRequest extends FormRequest
             'year' => 'required|integer|min:1700|max:' . date('Y'),
             'subjects' => 'nullable|array',
             'subjects.*' => 'nullable|integer|exists:subjects,id',
-            'image' => 'nullable|file|mimes:jpeg,jpeg,png,svg,webp|max:4096',
             'is_active' => 'required|boolean',
             'links' => 'nullable|array',
             'links.*.title' => 'required|string|min:3|max:255',

@@ -28,7 +28,6 @@ class QuestionFactory extends Factory
             'title' => fake()->sentence(),
             'content' => fake()->paragraph(),
             'year' => fake()->numberBetween(2018, 2022),
-            'image_url' => null,
             'is_active' => fake()->boolean(),
         ];
     }
