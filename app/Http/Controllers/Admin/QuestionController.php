@@ -138,8 +138,8 @@ class QuestionController extends Controller
      */
     public function createAlternatives(
         UpdateQuestionRequest|StoreQuestionRequest $request,
-        Question $question
-    ): void {
+        Question                                   $question
+    ): void
         $alternatives = [];
 
         foreach ($request->alternatives as $alternative) {
@@ -161,8 +161,9 @@ class QuestionController extends Controller
      */
     public function createLinks(
         UpdateQuestionRequest|StoreQuestionRequest $request,
-        Question $question
-    ): void {
+        Question                                   $question
+    ): void
+    {
         if (!empty($request->links)) {
             $links = [];
 
@@ -179,7 +180,10 @@ class QuestionController extends Controller
         }
     }
 
-    public function years()
+    /**
+     * @return JsonResponse
+     */
+    public function years(): JsonResponse
     {
         // get unique years, sort descending and turn into array of numbers
         $years = Question::select('year')

@@ -23,7 +23,7 @@ class QuestionLinkFactory extends Factory
         return [
             'question_id' => $questions->random(),
             'title' => fake()->sentence(),
-            'url' => fake()->url(),
+            'url' => 'https://www.youtube.com/watch?v=snN0tImCQTA',
             'type' => fake()->randomElement(['Geral', 'Youtube']),
         ];
     }
