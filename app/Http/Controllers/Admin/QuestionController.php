@@ -140,6 +140,7 @@ class QuestionController extends Controller
         UpdateQuestionRequest|StoreQuestionRequest $request,
         Question                                   $question
     ): void
+    {
         $alternatives = [];
 
         foreach ($request->alternatives as $alternative) {
