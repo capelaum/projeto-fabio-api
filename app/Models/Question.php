@@ -46,4 +46,9 @@ class Question extends Model
     {
         return $this->belongsToMany(Subject::class);
     }
+
+    public function answeredQuestions(): HasMany
+    {
+        return $this->hasMany(AnsweredQuestion::class);
+    }
 }

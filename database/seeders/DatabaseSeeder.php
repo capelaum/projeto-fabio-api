@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             QuestionLinkSeeder::class,
             SubjectSeeder::class,
             QuestionSubjectSeeder::class,
+            AnsweredQuestionSeeder::class
         ]);
     }
 }
