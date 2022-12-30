@@ -65,7 +65,30 @@ class UserController extends Controller
                 fn($query, $search) => $query->whereHas('question',
                     fn($query) => $query->where('title', 'like', "%{$search}%")
                 )
+            )
+            ->when($request->year,
+                fn($query, $year) => $query->whereHas('question',
+                    fn($query) => $query->where('year', $year)
+                )
+            )
+            ->when($request->category,
+                fn($query, $category) => $query->whereHas('question',
+                    fn($query) => $query->where('category_id', $category)
+                )
+            )
+            ->when($request->discipline,
+                fn($query, $discipline) => $query->whereHas('question',
+                    fn($query) => $query->where('discipline_id', $discipline)
+                )
+            )
+            ->when($request->subject,
+                fn($query, $subject) => $query->whereHas('question',
+                    fn($query) => $subject === 'none'
+                        ? $query->doesntHave('subjects')
+                        : $query->whereHas('subjects', fn($query) => $query->where('id', $subject))
+                )
             );
+
 
         $correctCount = (clone $userAnsweredQuestions)->where('is_correct', true)->count();
         $wrongCount = (clone $userAnsweredQuestions)->where('is_correct', false)->count();
