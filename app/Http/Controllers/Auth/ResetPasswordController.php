@@ -26,7 +26,7 @@ class ResetPasswordController extends Controller
      */
     public function email(Request $request): JsonResponse
     {
-        $request->validate(['email' => 'required|email']);
+        $request->validate(['email' => 'required|email|exists:users']);
 
         $status = Password::sendResetLink(
             $request->only('email')
@@ -46,7 +46,7 @@ class ResetPasswordController extends Controller
      */
     public function reset(Request $request, string $token): Redirector|RedirectResponse|Application
     {
-        return redirect(config('app.frontend_url') . "/?token={$token}&email={$request->email}");
+        return redirect(config('app.frontend_url') . "/senha/resetar?token={$token}&email={$request->email}");
     }
 
     /**

@@ -4,16 +4,12 @@ return [
     /**
      * Here you can specify the name of a custom route to handle the verification.
      */
-    'route' => null,
+    'route' => 'email/verify/{id}/{hash}',
 
     /**
      * Here you can specify the path to redirect to after verification.
      */
-    'redirect_to' => config('app.frontend_url') .
-    "/email/verificado?name=" . auth()->user()->name .
-    "&email=" . auth()->user()->email .
-    "&isAlreadyVerified=" . auth()->user()->hasVerifiedEmail() ? 'true' : 'false' .
-        "&newEmail=true",
+    'redirect_to' => config('app.frontend_url'),
 
     /**
      * Whether to login the user after successfully verifying its email.

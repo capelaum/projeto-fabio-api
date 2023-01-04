@@ -22,13 +22,12 @@ class VerifyEmailController extends Controller
     public function verify(Request $request): RedirectResponse
     {
         $user = User::findOrFail($request->route('id'));
-        $isAlreadyVerified = $user->hasVerifiedEmail() ? 'true' : 'false';
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($request->user()));
         }
 
-        $redirectPath = "/email/verificado?name={$user->name}&email={$user->email}&isAlreadyVerified={$isAlreadyVerified}&newEmail=false";
+        $redirectPath = "/email/verificado?name={$user->name}&email={$user->email}";
         $redirectUrl = config('app.frontend_url') . $redirectPath;
         return redirect($redirectUrl);
     }
