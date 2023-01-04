@@ -9,7 +9,11 @@ return [
     /**
      * Here you can specify the path to redirect to after verification.
      */
-    'redirect_to' => config('app.frontend_url') . '/email/verificado',
+    'redirect_to' => config('app.frontend_url') .
+    "/email/verificado?name=" . auth()->user()->name .
+    "&email=" . auth()->user()->email .
+    "&isAlreadyVerified=" . auth()->user()->hasVerifiedEmail() ? 'true' : 'false' .
+        "&newEmail=true",
 
     /**
      * Whether to login the user after successfully verifying its email.

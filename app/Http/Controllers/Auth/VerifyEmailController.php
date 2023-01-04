@@ -28,7 +28,7 @@ class VerifyEmailController extends Controller
             event(new Verified($request->user()));
         }
 
-        $redirectPath = "/email/verificado?name={$user->name}&email={$user->email}&isAlreadyVerified={$isAlreadyVerified}";
+        $redirectPath = "/email/verificado?name={$user->name}&email={$user->email}&isAlreadyVerified={$isAlreadyVerified}&newEmail=false";
         $redirectUrl = config('app.frontend_url') . $redirectPath;
         return redirect($redirectUrl);
     }
