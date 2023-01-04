@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AnsweredQuestionCollection;
 use App\Http\Resources\Admin\UserCollection;
-use App\Http\Resources\Admin\UserSingleResource;
 use App\Models\AnsweredQuestion;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
