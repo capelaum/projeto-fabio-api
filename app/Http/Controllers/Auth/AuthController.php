@@ -22,7 +22,9 @@ class AuthController extends Controller
      */
     public function getAuthUser(): JsonResponse
     {
-        return response()->json(auth()->user());
+        return response()->json([
+            'user' => new UserResource(auth()->user()),
+        ]);
     }
 
     /**
@@ -64,7 +66,7 @@ class AuthController extends Controller
                 $user->sendEmailVerificationNotification();
 
                 return response()->json([
-                    'message' => 'Verifique seu e-mail para fazer login. Um novo e-mail de verificação foi enviado para' . $user->email
+                    'message' => 'Verifique seu e-mail para fazer login. Um novo e-mail de verificação foi enviado para ' . $user->email
                 ], 401);
             }
 
@@ -73,7 +75,6 @@ class AuthController extends Controller
             RateLimiter::clear($request->throttleKey());
 
             return response()->json([
-                'message' => "Bem vindo(a) {$user->name}",
                 'token' => $userToken,
                 'user' => new UserResource($user),
             ], 200);

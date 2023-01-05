@@ -11,9 +11,9 @@ class StoreAnsweredQuestionRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class StoreAnsweredQuestionRequest extends FormRequest
     {
         return [
             'question_id' => 'required|integer|exists:questions,id',
-            'alternative_id' => 'required|integer|exists:alternative,id',
+            'alternative_id' => 'required|integer|exists:alternatives,id',
             'is_correct' => 'required|boolean'
         ];
     }

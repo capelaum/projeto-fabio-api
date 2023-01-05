@@ -11,9 +11,9 @@ class UpdateAnsweredQuestionRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateAnsweredQuestionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'alternative_id' => 'required|integer|exists:alternative,id',
+            'alternative_id' => 'required|integer|exists:alternatives,id',
             'is_correct' => 'required|boolean'
         ];
     }

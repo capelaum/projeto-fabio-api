@@ -4,13 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAnsweredQuestionRequest;
 use App\Http\Requests\UpdateAnsweredQuestionRequest;
+use App\Http\Resources\AnsweredQuestionCollection;
 use App\Models\AnsweredQuestion;
 use App\Models\Question;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnsweredQuestionController extends Controller
 {
+    /**
+     * @return AnsweredQuestionCollection
+     */
+    public function index(): AnsweredQuestionCollection
+    {
+        $answeredQuestions = auth()->user()->answeredQuestions;
+
+        return new AnsweredQuestionCollection($answeredQuestions);
+    }
+
     /**
      * @param StoreAnsweredQuestionRequest $request
      * @return JsonResponse
@@ -18,7 +30,7 @@ class AnsweredQuestionController extends Controller
     public function store(StoreAnsweredQuestionRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = auth()->user()->id;
 
         $answeredQuestion = AnsweredQuestion::create($data);
 
@@ -28,11 +40,15 @@ class AnsweredQuestionController extends Controller
         ], 201);
     }
 
-    public function update(UpdateAnsweredQuestionRequest $request, Question $question)
+    /**
+     * @param UpdateAnsweredQuestionRequest $request
+     * @param Question $answeredQuestion
+     * @return JsonResponse
+     */
+    public function update(UpdateAnsweredQuestionRequest $request, Question $answeredQuestion): JsonResponse
     {
-        $answeredQuestion = AnsweredQuestion::where('user_id', auth()->id())
-            ->where('question_id', $question->id)
-            ->first();
+        $answeredQuestion = AnsweredQuestion::where('user_id', auth()->user()->id)
+            ->where('question_id', $answeredQuestion->id);
 
         if(!$answeredQuestion) {
             return response()->json([
