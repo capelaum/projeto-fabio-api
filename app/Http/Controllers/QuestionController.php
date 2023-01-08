@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\QuestionCollection;
 use App\Models\Question;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,27 @@ class QuestionController extends Controller
                     ? $query->doesntHave('subjects')
                     : $query->whereHas('subjects', fn($query) => $query->where('id', $subject)
                     )
+            )
+            ->when($request->answer && $request->user,
+                function ($query, $answer) use ($request) {
+                    if ($request->answer === 'isNotAnswered') {
+                        $query->whereDoesntHave('answeredQuestions',
+                            fn($query) => $query->where('user_id', $request->user));
+                    } else {
+                        $query->whereHas('answeredQuestions',
+                            fn($query) => $query->where('user_id', $request->user));
+
+                        if ($request->answer === 'isCorrect') {
+                            $query->whereHas('answeredQuestions',
+                                fn($query) => $query->where('is_correct', true));
+                        }
+
+                        if ($request->answer === 'isWrong') {
+                            $query->whereHas('answeredQuestions',
+                                fn($query) => $query->where('is_correct', false));
+                        }
+                    }
+                }
             );
 
         $questions->orderBy('title');
